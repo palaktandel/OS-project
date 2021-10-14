@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>
+			Shell
+		</title>
+		<link rel='stylesheet' type='text/css' href='style.css'>
+	</head>
+	
+	<body>
+		<div id='shell' onresize='cmdInput.focus(); alert("hello")'>
+			<div id='previous'>
+				<div class='prevCmd'><span class='cmd'>./shell &gt info </span><br> Online Bash Window</div>
+			</div>
+			<div id='input'>
+				<span class='cmd' id='dir'>./shell &gt </span>
+				<input type='text' id='command' class='cmdInput' onkeypress='if(event.keyCode === 13) executeCmd()'>
+				<button class='execute' onclick='executeCmd()'> Execute </button>
+			</div>
+		</div>
+	</body>
+	<script>
+		cmdInput = document.getElementById('command')
+		prevDiv = document.getElementById('previous')
+		dir = document.getElementById('dir')
+		
+		function executeCmd() {
+			req = {}
+			if (!cmdInput.value)
+				return
+			req.cmd = cmdInput.value
+			cmdInput.value = ''
+			cmdInput.blur()
+			xhttp = new XMLHttpRequest()
+			xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					response = JSON.parse(this.responseText)
+					showCommand(response)
+				}
+			}
+			xhttp.open('POST', "execute", true)
+			xhttp.setRequestHeader('content-type', "application/json")
+			xhttp.send(JSON.stringify(req))
+		}
+		
+		function showCommand(response) {
+			div = document.createElement('div')
+			div.className = 'prevCmd'
+			span = document.createElement('span')
+			span.className = 'cmd'
+			span.innerText = dir.innerText + response.cmd
+			dir.innerText = response.cwd + " > "
+			div.appendChild(span)
+			div.appendChild(document.createElement('br'))
+			if (response.error) {
+				err = document.createElement('p')
+				err.className = 'error'
+				err.appendChild(document.createTextNode(response.error))
+				div.appendChild(err)
+			}
+			div.appendChild( document.createTextNode(response.response))
+			prevDiv.appendChild(div)
+			cmdInput.focus()
+		}
+		
+		function receiveOutput() {
+			xhttp = new XMLHttpRequest()
+			xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					response = JSON.parse(this.responseText)
+					console.log(response.response)
+					receiveOutput()
+				}
+			}
+			xhttp.open('GET', "stdout", true)
+			xhttp.send()
+		}
+	</script>
+</html>

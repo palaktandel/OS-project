@@ -1,0 +1,58 @@
+body {
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	background:  powderblue;
+	
+}
+
+div#shell {
+	font-size: 20px;
+	background: #4c8383;
+	padding: 8px 8px;
+	width: 100%;
+	height: 100%;
+	color: white;
+	font-size: 23px;
+}
+
+span.cmd {
+	color: rgb(250, 213, 7);
+
+	font-family:'Times New Roman', Times, serif;
+	font-size: 23px;
+}
+p.error {
+	color: #03f8cf;
+	font-size: 23px;
+}
+
+div.prevCmd {
+	margin-bottom: 12px;
+	white-space: pre-wrap;
+}
+
+button.execute {
+	font-size: 18px;
+	background:rgb(250, 213, 7) ;
+	border-radius: 8px;
+	color: black;
+	border: none;
+	padding: 4px 10px;
+	margin-left: 0.6%;
+}
+
+input#command {
+	background: rgba(0, 0, 0, 0.192);
+	border-radius: 6px;
+	color: rgb(199, 250, 106);
+	padding: 2px 8px;
+	font-size: 20px;
+	width: 80%;
+	border: none;
+}
+
+input#command:visited, input#command:focus {
+	outline: none;
+	border: none;
+}
